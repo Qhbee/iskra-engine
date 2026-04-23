@@ -1,10 +1,11 @@
 # check_db_clean.py
-import psycopg2
+import psycopg
 
+# psycopg3: 用 dbname，不用 database
 DB_CONFIG = {
     "host": "127.0.0.1",
     "port": "5432",
-    "database": "core_db",
+    "dbname": "core_db",
     "user": "db_admin",     # 使用时改为真实用户
     "password": "password", # 使用时改为真实密码
     # 关键点：连接参数里虽然不能直接写 schema，但在 execute 时可以指定
@@ -17,7 +18,7 @@ def check_and_clean():
     conn = None
     try:
         print("🔌 正在通过隧道连接数据库...")
-        conn = psycopg2.connect(**DB_CONFIG)
+        conn = psycopg.connect(**DB_CONFIG)
         cur = conn.cursor()
 
         # 1. 检查版本
