@@ -1,15 +1,22 @@
 # check_db_clean.py
+# 凭据从环境变量读取；本地可建 .env（见 .env.example），勿提交 .env
+import os
 import psycopg
+from dotenv import load_dotenv
+
+# 在仓库根/当前工作目录加载 .env（有则读，无则只读系统环境变量）
+load_dotenv()
 
 # psycopg3: 用 dbname，不用 database
-DB_CONFIG = {
-    "host": "127.0.0.1",
-    "port": "5432",
-    "dbname": "core_db",
-    "user": "db_admin",     # 使用时改为真实用户
-    "password": "password", # 使用时改为真实密码
-    # 关键点：连接参数里虽然不能直接写 schema，但在 execute 时可以指定
-}
+def _db_config() -> dict:
+    """与 libpq 一致：PGHOST / PGPORT / PGDATABASE / PGUSER / PGPASSWORD。"""
+    return {
+        "host": os.environ.get("PGHOST", "127.0.0.1"),
+        "port": os.environ.get("PGPORT", "5432"),
+        "dbname": os.environ.get("PGDATABASE", "core_db"),
+        "user": os.environ.get("PGUSER", "db_admin"),
+        "password": os.environ.get("PGPASSWORD", "password"),
+    }
 
 # 格式：ssh -L 本地端口:127.0.0.1:远程容器端口 用户@服务器IP
 # ssh -L 5432:127.0.0.1:5432 root@<你的服务器IP>
@@ -18,7 +25,7 @@ def check_and_clean():
     conn = None
     try:
         print("🔌 正在通过隧道连接数据库...")
-        conn = psycopg.connect(**DB_CONFIG)
+        conn = psycopg.connect(**_db_config())
         cur = conn.cursor()
 
         # 1. 检查版本

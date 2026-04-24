@@ -9,6 +9,9 @@ wheels/
 # Virtual environments
 .venv
 
+# Local secrets (copy from .env.example)
+.env
+
 # IDE
 .idea
 .vscode
