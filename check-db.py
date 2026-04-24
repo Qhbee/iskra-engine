@@ -1,4 +1,5 @@
 # check_db_clean.py
+# 一次性连通性/ pgvector 烟测。
 # 凭据从环境变量读取；本地可建 .env（见 .env.example），勿提交 .env
 import os
 import psycopg
@@ -49,10 +50,11 @@ def check_and_clean():
         cur.execute(f"INSERT INTO {table_name} (vec) VALUES ('[1,2,3]');")
         print(f"✅ 向量写入测试成功 (表: {table_name})")
 
-        # 6. 清理现场 (Drop Table)
-        cur.execute(f"DROP TABLE {table_name};")
+        # 6. 清理：删测试表，并删掉为烟测临时建的 schema，避免库上残留空 iskra
+        cur.execute(f"DROP TABLE IF EXISTS {table_name};")
+        cur.execute("DROP SCHEMA IF EXISTS iskra CASCADE;")
         conn.commit()
-        print("✅ 现场清理完毕 (测试表已删除)")
+        print("✅ 现场清理完毕 (测试表与 schema iskra 已删除)")
 
     except Exception as e:
         print(f"❌ 连接失败，错误: {e}")
