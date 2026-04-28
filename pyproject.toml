@@ -13,7 +13,7 @@ dependencies = [
     "python-dotenv>=1.2.1",
     "sqlalchemy>=2.0.46",
     "uvicorn[standard]>=0.40.0",
-    # llama-cpp-python 0.3.19 — 仅 CPU 预编译；GPU 另装 wheel 勿混写在此（易锁冲突）
+    # llama-cpp-python 0.3.19 — 仅 CPU 预编译；放弃 GPU 另装 wheel
     # Windows ：abetlen Release 直链（cp312 · win_amd64）
     "llama-cpp-python @ https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.19/llama_cpp_python-0.3.19-cp312-cp312-win_amd64.whl ; sys_platform == 'win32'",
     # Linux   ：同版本，依赖下方 [tool.uv] extra-index（whl/cpu）解析预编译 wheel

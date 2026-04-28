@@ -1,5 +1,7 @@
 """
 加载 Jina Q8_0 GGUF，试跑一条 embedding，确认 dim=1024。
+
+部署目标：Linux x86_64 CPU；需 .env 中 ISKRA_GGUF_PATH 与 ISKRA_N_GPU_LAYERS（生产用 0）。
 """
 
 from __future__ import annotations
