@@ -408,7 +408,7 @@ wheels = [
 [[package]]
 name = "iskra-engine"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
     { name = "llama-cpp-python", version = "0.3.19", source = { registry = "https://abetlen.github.io/llama-cpp-python/whl/cpu" }, marker = "sys_platform == 'linux'" },

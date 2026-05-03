@@ -1,7 +1,11 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "iskra-engine"
 version = "0.1.0"
-description = "Add your description here"
+description = "RAG 引擎，提供对内的 HTTP API：基于 PostgreSQL/pgvector 的检索与 LLM 对话调用；不负责会话持久化等外层 Web 服务。"
 readme = "README.md"
 # 新版 Python 没有预编译轮子
 requires-python = ">=3.12,<3.13"
@@ -19,6 +23,9 @@ dependencies = [
     # Linux   ：同版本，依赖下方 [tool.uv] extra-index（whl/cpu）解析预编译 wheel
     "llama-cpp-python==0.3.19 ; sys_platform == 'linux'",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 # 供 Linux 条 `llama-cpp-python==0.3.19` 从 abetlen 取 wheel，避免 PyPI 仅 sdist
 [tool.uv]
