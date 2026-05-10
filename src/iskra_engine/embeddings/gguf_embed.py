@@ -4,11 +4,12 @@ from __future__ import annotations
 import math
 import os
 from pathlib import Path
-from threading import Lock
+from threading import RLock
 from typing import Any, Optional
 
 _llama: Optional[Any] = None
-_lock = Lock()
+# RLock：可重入，`embed_prefixed` 整段与同线程内的 `_get_llama_embedder` 嵌套获取不会死锁；多线程下串行化 `Llama.embed`。
+_lock = RLock()
 
 
 def _l2_normalize(vec: list[float]) -> list[float]:
@@ -57,22 +58,26 @@ def _get_llama_embedder():
 
 
 def embed_prefixed(prompt: str) -> list[float]:
-    """单行文本（已含前缀）→ L2 单位向量列表。"""
-    llm = _get_llama_embedder()
-    out = llm.embed(prompt)
-    if not out:
-        msg = "embed 返回空"
-        raise RuntimeError(msg)
-    first = out[0]
-    vec = list(first if isinstance(first, (list, tuple)) else out)
-    if len(vec) == 0:
-        msg = "向量为空"
-        raise RuntimeError(msg)
-    expect = int(os.environ.get("ISKRA_EMBED_DIM", "1024"))
-    if len(vec) != expect:
-        msg = f"向量维数期望 {expect}，实际 {len(vec)}"
-        raise ValueError(msg)
-    return _l2_normalize(vec)
+    """单行文本（已含前缀）→ L2 单位向量列表。
+
+    与进程内全局单例 ``Llama`` 共享；多线程（如 FastAPI sync 路由线程池）下对 ``embed`` 串行化以保证安全。
+    """
+    with _lock:
+        llm = _get_llama_embedder()
+        out = llm.embed(prompt)
+        if not out:
+            msg = "embed 返回空"
+            raise RuntimeError(msg)
+        first = out[0]
+        vec = list(first if isinstance(first, (list, tuple)) else out)
+        if len(vec) == 0:
+            msg = "向量为空"
+            raise RuntimeError(msg)
+        expect = int(os.environ.get("ISKRA_EMBED_DIM", "1024"))
+        if len(vec) != expect:
+            msg = f"向量维数期望 {expect}，实际 {len(vec)}"
+            raise ValueError(msg)
+        return _l2_normalize(vec)
 
 
 def embed_query(query: str) -> list[float]:
