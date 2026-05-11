@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from iskra_engine.api.routers import health
+from iskra_engine.api.routers import health, rag
 
 app = FastAPI(
     title="iskra-engine",
@@ -14,3 +14,4 @@ app = FastAPI(
 
 
 app.include_router(health.router)
+app.include_router(rag.router)
