@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from iskra_engine.api.routers import health
+
 app = FastAPI(
     title="iskra-engine",
     version="0.1.0",
@@ -11,6 +13,4 @@ app = FastAPI(
 )
 
 
-@app.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+app.include_router(health.router)
