@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Optional
+from typing import Any, Optional, override
 
 from dotenv import load_dotenv
 from llama_index.core.base.llms.types import LLMMetadata, MessageRole
@@ -38,11 +38,13 @@ class OpenAICompatibleAny(OpenAI):
     - ``_tokenizer``：tiktoken 无法识别模型名时不做精确计数字典，避免 KeyError。
     """
 
+    @override
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         # 转发到父类，避免 IDE 误判「子类不接受 model/api_key/temperature」等关键字。
         super().__init__(*args, **kwargs)
 
     @property
+    @override
     def _tokenizer(self) -> Optional[Tokenizer]:
         try:
             return super()._tokenizer
@@ -52,6 +54,7 @@ class OpenAICompatibleAny(OpenAI):
             return None
 
     @property
+    @override
     def metadata(self) -> LLMMetadata:
         name = self._get_model_name()
         try:

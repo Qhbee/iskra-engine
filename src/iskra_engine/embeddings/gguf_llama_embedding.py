@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import asyncio
 import os
-from typing import Any
+from typing import Any, override
 
 from dotenv import load_dotenv
 from llama_index.core.base.embeddings.base import BaseEmbedding, Embedding
@@ -19,6 +19,7 @@ class GgufEmbedding(BaseEmbedding):
 
     embed_dim: int = Field(ge=1, description="向量维数")
 
+    @override
     def __init__(self, *, embed_dim: int | None = None, **kwargs: Any) -> None:
         load_dotenv()
         dim = (
@@ -29,17 +30,22 @@ class GgufEmbedding(BaseEmbedding):
         super().__init__(embed_dim=dim, model_name="iskra-jina-embeddings-v5-retrieval-gguf", **kwargs)
 
     @classmethod
+    @override
     def class_name(cls) -> str:
         return "GgufEmbedding"
 
+    @override
     def _get_query_embedding(self, query: str) -> Embedding:
         return embed_query(query)
 
+    @override
     async def _aget_query_embedding(self, query: str) -> Embedding:
         return await asyncio.to_thread(embed_query, query)
 
+    @override
     def _get_text_embedding(self, text: str) -> Embedding:
         return embed_document(text)
 
+    @override
     async def _aget_text_embedding(self, text: str) -> Embedding:
         return await asyncio.to_thread(embed_document, text)

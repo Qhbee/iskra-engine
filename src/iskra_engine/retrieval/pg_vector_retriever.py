@@ -17,7 +17,7 @@ HNSW ``ef_search``（环境变量 ``PG_HNSW_EF_SEARCH``）与 ``top_k``（环境
 from __future__ import annotations
 
 import os
-from typing import Callable, Optional, Sequence, cast
+from typing import Callable, Optional, Sequence, cast, override
 
 import psycopg
 from dotenv import load_dotenv
@@ -82,6 +82,7 @@ class PgVectorRetriever(BaseRetriever):
     返回 chunk 正文，``metadata`` 中含文档侧字段（``rel_path`` / ``title`` / ``book`` 等）。
     """
 
+    @override
     def __init__(
         self,
         embedding_model: BaseEmbedding,
@@ -109,6 +110,7 @@ class PgVectorRetriever(BaseRetriever):
             lambda: psycopg.connect(**pg_connect_kwargs())
         )
 
+    @override
     def _retrieve(self, query_bundle: QueryBundle) -> list[NodeWithScore]:
         qstr = query_bundle.query_str.strip()
         if not qstr:
