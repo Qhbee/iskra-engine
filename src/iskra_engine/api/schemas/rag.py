@@ -13,7 +13,7 @@ class RagQueryRequest(BaseModel):
     model: str | None = Field(
         None,
         max_length=128,
-        description="覆盖环境变量 MODEL；未传则仍用 .env 中的 MODEL",
+        description="覆盖环境变量 DEFAULT_MODEL；未传则仍用 .env 中的 DEFAULT_MODEL",
     )
 
 

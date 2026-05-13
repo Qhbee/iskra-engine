@@ -1,4 +1,4 @@
-"""单次提问：跑一次 ``ChatLlm.query``（需项目根 ``.env``：``API_KEY`` 等）。
+"""单次提问：跑一次 ``ChatLlm.query``（需项目根 ``.env``：``DEFAULT_MODEL`` 为「厂商/模型」及对应厂商 ``*_API_KEY`` 等）。
 
 多轮对话见同目录 ``llm_chat_loop.py``。
 """

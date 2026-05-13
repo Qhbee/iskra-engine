@@ -40,7 +40,7 @@ uv run python scripts/probe_vector_retrieval.py "你的问题" --json
 
 涉及代码：`[src/iskra_engine/db/conn.py](src/iskra_engine/db/conn.py)`、`[src/iskra_engine/embeddings/gguf_embed.py](src/iskra_engine/embeddings/gguf_embed.py)`、`[src/iskra_engine/embeddings/gguf_llama_embedding.py](src/iskra_engine/embeddings/gguf_llama_embedding.py)`、`[src/iskra_engine/retrieval/pg_vector_retriever.py](src/iskra_engine/retrieval/pg_vector_retriever.py)`。
 
-**完整 RAG（检索 + LLM 合成）** 需 `.env` 中配置 `PG*`、`ISKRA_GGUF_PATH`（查询向量，与入库 chunk 向量同空间）、以及合成用 `API_KEY` / `BASE_URL` / `MODEL` 等（见 [.env.example](.env.example) 中 RAG 段）。
+**完整 RAG（检索 + LLM 合成）** 需 `.env` 中配置 `PG*`、`ISKRA_GGUF_PATH`（查询向量，与入库 chunk 向量同空间）、以及合成用 **`DEFAULT_MODEL`（必须为「厂商/模型」）** 与 **该厂商**对应的 `*_API_KEY` / `*_BASE_URL`（见 [.env.example](.env.example) 中 LLM 段；**不再**使用通用 `API_KEY` / `BASE_URL`）。
 
 起服务后调用（示例）：
 
@@ -74,7 +74,7 @@ uv run --no-sync python scripts/rag_query_once.py "你的问题" --json
 
 ### 大模型配置（LlamaIndex，OpenAI 兼容）
 
-1. 复制 [`.env.example`](.env.example) 为 `.env`，按厂商文档填写 `API_KEY`，按需填 `BASE_URL`、`MODEL`。若 ``MODEL`` 为 DeepSeek 等**非 OpenAI 官方名称**，在 `.env` 设置 ``CONTEXT_WINDOW``（例如厂商文档里的上下文长度），见 [.env.example](.env.example)。 
+1. 复制 [`.env.example`](.env.example) 为 `.env`，将 **`DEFAULT_MODEL` 设为「厂商/模型」**（如 `openai/gpt-4o-mini`），并按厂商填写 **对应前缀的** `*_API_KEY` 与（建议）`*_BASE_URL`。若模型 id 为**非 OpenAI 官方名称**，在 `.env` 设置 `CONTEXT_WINDOW`（例如厂商文档里的上下文长度），见 [.env.example](.env.example)。 
 2. 仓库根目录**已可编辑安装**后，在项目根执行：
 
 单次提问

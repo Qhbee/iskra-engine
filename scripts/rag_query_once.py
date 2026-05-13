@@ -1,4 +1,4 @@
-"""命令行跑一次 RAG（需 ``.env``：``PG*``、``API_KEY``、``ISKRA_GGUF_PATH`` 等）。"""
+"""命令行跑一次 RAG（需 ``.env``：``PG*``、``DEFAULT_MODEL``（厂商/模型）、厂商 ``*_API_KEY``、``ISKRA_GGUF_PATH`` 等）。"""
 from __future__ import annotations
 
 import argparse
