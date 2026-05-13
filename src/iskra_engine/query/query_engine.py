@@ -26,6 +26,7 @@ def build_rag_query_engine(
     *,
     top_k: Optional[int] = None,
     path_prefix: Optional[str] = None,
+    model: Optional[str] = None,
     llm: Optional[LLM] = None,
     embedding_model: Optional[BaseEmbedding] = None,
     load_dotenv_: bool = True,
@@ -40,7 +41,7 @@ def build_rag_query_engine(
     """
     if load_dotenv_:
         load_dotenv()
-    llm_eff = llm or build_openai_compatible_llm()
+    llm_eff = llm or build_openai_compatible_llm(model=model)
     embedding_eff = embedding_model or GgufEmbedding()
 
     retriever = PgVectorRetriever(

@@ -26,6 +26,7 @@ def rag_query(body: RagQueryRequest) -> RagQueryResponse:
         engine = build_rag_query_engine(
             top_k=body.top_k,
             path_prefix=body.path_prefix,
+            model=body.model.strip() if body.model and body.model.strip() else None,
             load_dotenv_=False,
         )
         llama_index_response = cast(Response, engine.query(q))

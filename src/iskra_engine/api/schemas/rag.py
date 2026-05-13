@@ -10,6 +10,11 @@ class RagQueryRequest(BaseModel):
         None,
         description="仅检索 rel_path 此前缀（会自动加 % LIKE）",
     )
+    model: str | None = Field(
+        None,
+        max_length=128,
+        description="覆盖环境变量 MODEL；未传则仍用 .env 中的 MODEL",
+    )
 
 
 class RagSourceItem(BaseModel):
