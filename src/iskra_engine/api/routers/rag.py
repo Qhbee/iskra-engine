@@ -48,7 +48,9 @@ def _to_rag_query_response(llama_index_response: Response) -> RagQueryResponse:
     out: list[RagSourceItem] = []
     for sn in llama_index_response.source_nodes:
         md = sn.node.metadata or {}
-        text = sn.node.get_content(metadata_mode=MetadataMode.LLM)
+        # ``MetadataMode.LLM`` 会把 metadata 拼进正文（rel_path、embedding_distance 等），
+        # 与 DB ``chunk.text`` 重复且易被误认为「多列拼成一行」。API 的 snippet 只要纯文本。
+        text = sn.node.get_content(metadata_mode=MetadataMode.NONE)
         out.append(
             RagSourceItem(
                 rel_path=md.get("rel_path"),
