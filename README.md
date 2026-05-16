@@ -34,7 +34,7 @@ API 文档（ReDoc）：`GET http://127.0.0.1:8000/redoc`
 **只测向量召回（不调大模型）**：用脚本 [`scripts/probe_vector_retrieval.py`](scripts/probe_vector_retrieval.py)，输出与 `sources` 类似的 `rel_path` / `chunk_index` / `score` / 片段预览。
 
 ```bash
-uv run python scripts/probe_vector_retrieval.py "你的问题" --json
+uv run python scripts/probe_vector_retrieval.py "你的问题"
 # 可选：--top-k 10  --path-prefix books/vol1
 ```
 
