@@ -24,7 +24,7 @@ dependencies = [
     # Windows ：abetlen Release 直链（cp312 · win_amd64）
     "llama-cpp-python @ https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.19/llama_cpp_python-0.3.19-cp312-cp312-win_amd64.whl ; sys_platform == 'win32'",
     # Linux   ：同版本，依赖下方 [tool.uv] extra-index（whl/cpu）解析预编译 wheel
-    "llama-cpp-python==0.3.19 ; sys_platform == 'linux'",
+    "llama-cpp-python @ https://github.com/Qhbee/llama-cpp-python-wheels/releases/download/v0.3.19/llama_cpp_python-0.3.19-cp312-cp312-linux_x86_64.whl ; sys_platform == 'linux'",
 ]
 
 [project.optional-dependencies]
@@ -32,7 +32,3 @@ dev = ["pytest>=8"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-# 供 Linux 条 `llama-cpp-python==0.3.19` 从 abetlen 取 wheel，避免 PyPI 仅 sdist
-[tool.uv]
-extra-index-url = ["https://abetlen.github.io/llama-cpp-python/whl/cpu"]
