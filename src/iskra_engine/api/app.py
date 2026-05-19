@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
+from iskra_engine import __version__
 from iskra_engine.api.routers import health, rag
 
 log = logging.getLogger("uvicorn.error")
@@ -26,7 +27,7 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(
     title="iskra-engine",
-    version="0.1.0",
+    version=__version__,
     description=(
         "Iskra 的智能引擎，通过对内的 HTTP API 提供 RAG 服务："
         "基于 PostgreSQL/pgvector 的文档上下文检索 + 包装提示词 LLM 对话调用 + 应答生成接口；"
